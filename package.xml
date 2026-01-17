@@ -4,7 +4,9 @@
   <name>mirs</name>
   <version>0.0.0</version>
   <description>ESP32 Client for ROS 2</description>
-  <maintainer email="oumuika@gmail.com">jetson</maintainer>
+  <maintainer email="6kam465@gmail.com">MIRS Tanq Team A</maintainer>
+  <author>mirs240x</author>
+  <author>mirs2502</author>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
