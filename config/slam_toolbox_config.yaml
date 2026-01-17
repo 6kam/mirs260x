@@ -1,0 +1,32 @@
+slam_toolbox:
+  ros__parameters:
+    # --- 1. TFの"鎖"を明示的に指定 ---
+    odom_frame: "odom"
+    map_frame: "map"
+    base_frame: "base_link"
+    # オドメトリのモデルを指定
+    # (diff-corrected は、オドメトリの誤差も考慮して補正するモード)
+    # odom_model_type: "diff-corrected"
+
+    # --- 2. タイムアウト（遅延許容）設定 ---
+    transform_timeout: 0.5
+
+    # --- 3. ★ センサーのフィルタリング（クラッシュ対策） ★ ---
+    # LiDARの仕様に合わせて設定 (以前のログ より)
+    scan_topic: "/scan"
+    min_scan_range: 0.05  # 0.05m より近いデータは無視
+    max_scan_range: 40.0  # 40.0m より遠いデータは無視
+
+    # 無効な値 (.inf や NaN) を除外する（これが重要）
+    scan_filter_type: "LaserScan"
+    scan_filter:
+      type: "LaserScan"
+      min_range: 0.05
+      max_range: 40.0
+      min_intensity: 0.0
+      max_intensity: 100000.0 # ほとんどのLiDARで十分な値
+
+    # --- 4. その他のSLAM基本設定 ---
+    use_scan_matching: true
+    use_scan_barycenter: true
+    mode: "mapping"
