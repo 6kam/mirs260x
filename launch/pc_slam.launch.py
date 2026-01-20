@@ -26,9 +26,9 @@ def generate_launch_description():
     slam_config_file = LaunchConfiguration('slam_config_file')
     declare_arg_slam_config_file = DeclareLaunchArgument(
         'slam_config_file',
-        # install フォルダではなく、src フォルダのファイルを直接指定する
         default_value=os.path.join(
-            '/home/sawara/mirs_ws/src/mirs_mg5/mirs/config', # あなたの環境の絶対パス
+            mirs_share_dir,
+            'config',
             'slam_toolbox_config.yaml'),
         description='The full path to the config file for SLAM')
 
