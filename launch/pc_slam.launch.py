@@ -30,7 +30,7 @@ def generate_launch_description():
             mirs_share_dir,
             'config',
             'slam_toolbox_config.yaml'),
-        description='The full path to the config file for SLAM')
+        description='/root/projects/mirsws/src/mirs_mg5/mirs/rviz/default.rviz')
 
     # slam_toolbox ノードの定義
     slam_node = Node(
