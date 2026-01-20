@@ -80,9 +80,7 @@ install(DIRECTORY
   launch
   rviz
   maps
-
   urdf
-  
   DESTINATION share/${PROJECT_NAME}/
 )
 
