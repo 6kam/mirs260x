@@ -52,7 +52,7 @@ def generate_launch_description():
             mirs_share_dir, # install フォルダの .rviz を使う
             'rviz',
             'default.rviz'),
-        description='/root/projects/mirsws/install/mirs_mg5/rviz/default.rviz'
+        description='/root/projects/mirsws/src/mirs_mg5/mirs/rviz/default.rviz'
     )
 
     # Rviz ノードの定義
