@@ -162,9 +162,16 @@ def generate_launch_description():
     from launch.actions import ExecuteProcess
     from launch.conditions import IfCondition
 
+    # Grootの実行パス設定
+    groot_executable = DeclareLaunchArgument(
+        'groot_executable',
+        default_value='Groot',
+        description='Path to the Groot executable'
+    )
+
     groot_process = ExecuteProcess(
         cmd=[
-            '/home/sawara/mirs_ws/Groot/build/Groot',
+            LaunchConfiguration('groot_executable'),
             '--mode', 'monitor',
             '--publisher_port', '2666',
             '--server_port', '2667',
@@ -173,6 +180,11 @@ def generate_launch_description():
         output='screen',
         condition=IfCondition(LaunchConfiguration('launch_groot'))
     )
+
+    # 戻り値のLaunchDescriptionに追加する引数をリストの最後に追加する形になるので注意が必要だが、
+    # ここでは既存のリスト構築方法に合わせて追加する。
+    # ただし、return文の中のリストに groot_executable を追加する必要がある。
+
 
     return LaunchDescription([
         map_yaml_file,
@@ -189,5 +201,6 @@ def generate_launch_description():
         trajectory_publisher,
         # landmark_localizer は起動しない
         rviz_node,
+        groot_executable,
         groot_process
     ])
