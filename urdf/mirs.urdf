@@ -122,13 +122,12 @@
     </visual>
   </link>
 
-  <!-- LIDAR の固定ジョイント：base_footprint → laser -->
+  <!-- LIDAR の固定ジョイント：base_link → laser -->
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="laser"/>
-    <origin xyz="0 0 0.105" rpy="3.14159 0 0"/> 
-    <!--<origin xyz="0 0 0.105" rpy="3.14159 0 3.14159"/>　-->
-    <!-- 高さ20.5cmに設置(base_linkから+10.5cm)。上下逆さま(Roll=180度)。 -->
+    <origin xyz="0 0 0.105" rpy="0 0 0"/> 
+    <!-- 高さ20.5cmに設置(base_linkから+10.5cm)。正立。 -->
   </joint>
 
   <!--==============================================================
