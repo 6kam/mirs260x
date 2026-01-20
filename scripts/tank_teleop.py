@@ -11,8 +11,8 @@ class TankTeleop(Node):
         
         # パラメータの宣言
         self.declare_parameter('axis_left', 1)      # 左スティック縦
-        self.declare_parameter('axis_right', 4)     # 右スティック縦
-        self.declare_parameter('enable_button', 10)  # L1ボタン
+        self.declare_parameter('axis_right', 3)     # 右スティック縦
+        self.declare_parameter('enable_button', 9)  # L1ボタン
         self.declare_parameter('scale_linear', 0.5)
         self.declare_parameter('scale_angular', 1.0)
         
@@ -32,34 +32,30 @@ class TankTeleop(Node):
         scale_linear = self.get_parameter('scale_linear').value
         scale_angular = self.get_parameter('scale_angular').value
         
+        # --- 詳細デバッグログ ---
+        self.get_logger().info(f'Axes: {[f"{a:.2f}" for a in msg.axes]}, Buttons: {msg.buttons}')
+        # ----------------------
+
         twist = Twist()
         
-        # デバッグログ: ボタンと軸の入力を表示
-        if len(msg.buttons) > enable_button:
-            enable_val = msg.buttons[enable_button]
-            # self.get_logger().info(f'Enable Button({enable_button}): {enable_val}, Axes: {msg.axes}')
-        else:
-            self.get_logger().warn(f'Button index {enable_button} out of range! Max: {len(msg.buttons)-1}')
-            return
-
-        # 有効化ボタン（L1）が押されているか確認
-        if msg.buttons[enable_button] == 1:
-            # スティック入力の取得 (-1.0 ～ 1.0)
-            if len(msg.axes) > axis_right:
+        # 有効化ボタンの判定（デバッグのため一時的に常にTrue）
+        is_enabled = True
+        # if len(msg.buttons) > enable_button:
+        #     if msg.buttons[enable_button] == 1:
+        #         is_enabled = True
+        
+        if is_enabled:
+            if len(msg.axes) > max(axis_left, axis_right):
                 v_l = msg.axes[axis_left]
                 v_r = msg.axes[axis_right]
                 
-                # タンクドライブから Twist (linear.x, angular.z) への変換
                 twist.linear.x = ((v_l + v_r) / 2.0) * scale_linear
                 twist.angular.z = ((v_r - v_l) / 2.0) * scale_angular
                 
-                self.get_logger().info(f'Publishing: Linear={twist.linear.x:.2f}, Angular={twist.angular.z:.2f}')
+                self.get_logger().info(f'Enabled(BTN {enable_button}) -> Linear: {twist.linear.x:.2f}, Angular: {twist.angular.z:.2f}')
             else:
-                self.get_logger().warn(f'Axis index out of range! Left:{axis_left}, Right:{axis_right}, Max:{len(msg.axes)-1}')
-        else:
-            # L1が押されていないときはログを間引いて出すか、停止コマンドを送る
-            pass
-            
+                self.get_logger().warn(f'Axis index error! Need max {max(axis_left, axis_right)}, but got {len(msg.axes)}')
+        
         self.publisher_.publish(twist)
 
 def main(args=None):
