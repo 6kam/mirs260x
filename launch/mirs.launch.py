@@ -29,7 +29,6 @@ def generate_launch_description():
     # 既存の設定ファイル
     config_file_path = os.path.join(pkg_share, 'config', 'config.yaml')
     
-    # ★追加: EKF用の設定ファイル (ekf.yaml)
     ekf_config_path = os.path.join(pkg_share, 'config', 'ekf_params.yaml')
     ekf_global_config_path = os.path.join(pkg_share, 'config', 'ekf_global_params.yaml')
 
@@ -79,7 +78,7 @@ def generate_launch_description():
     #     arguments=["0", "0", "0.3", "0", "0", "0", "base_link", "laser"]
     # )
 
-    # ★追加: Robot State Publisher (URDF)
+    # Robot State Publisher (URDF)
     urdf_file_name = 'mirs.urdf'
     urdf_path = os.path.join(
         get_package_share_directory('mirs'),
@@ -96,7 +95,7 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_desc, 'use_sim_time': LaunchConfiguration('use_sim_time')}],
     )
 
-    # ★追加: robot_localization (EKF) ノード x2
+    # robot_localization (EKF) ノード x2
 
     # Local EKF (odom -> base_link)
     ekf_node_local = Node(
