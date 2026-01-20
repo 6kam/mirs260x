@@ -128,17 +128,17 @@ def generate_launch_description():
     from launch.actions import ExecuteProcess
     from launch.conditions import IfCondition
 
-    groot_process = ExecuteProcess(
-        cmd=[
-            '/home/sawara/mirs_ws/Groot/build/Groot',
-            '--mode', 'monitor',
-            '--publisher_port', '2666',
-            '--server_port', '2667',
-            '--autoconnect'
-        ],
-        output='screen',
-        condition=IfCondition(LaunchConfiguration('launch_groot'))
-    )
+    # groot_process = ExecuteProcess(
+    #     cmd=[
+    #         '/home/sawara/mirs_ws/Groot/build/Groot',  # ハードコードされたパス - 環境に合わせて変更が必要
+    #         '--mode', 'monitor',
+    #         '--publisher_port', '2666',
+    #         '--server_port', '2667',
+    #         '--autoconnect'
+    #     ],
+    #     output='screen',
+    #     condition=IfCondition(LaunchConfiguration('launch_groot'))
+    # )
 
     return LaunchDescription([
         map_yaml_file,
@@ -152,5 +152,5 @@ def generate_launch_description():
         real_mission_launch,
         delayed_landmark_localizer_node,
         rviz_node,
-        groot_process
+        # groot_process  # ハードコードされたパスのため無効化
     ])

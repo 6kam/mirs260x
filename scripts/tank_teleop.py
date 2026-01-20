@@ -12,7 +12,7 @@ class TankTeleop(Node):
         # パラメータの宣言
         self.declare_parameter('axis_left', 1)      # 左スティック縦
         self.declare_parameter('axis_right', 4)     # 右スティック縦
-        self.declare_parameter('enable_button', 4)  # L1ボタン
+        self.declare_parameter('enable_button', 10)  # L1ボタン
         self.declare_parameter('scale_linear', 0.5)
         self.declare_parameter('scale_angular', 1.0)
         
@@ -34,18 +34,31 @@ class TankTeleop(Node):
         
         twist = Twist()
         
+        # デバッグログ: ボタンと軸の入力を表示
+        if len(msg.buttons) > enable_button:
+            enable_val = msg.buttons[enable_button]
+            # self.get_logger().info(f'Enable Button({enable_button}): {enable_val}, Axes: {msg.axes}')
+        else:
+            self.get_logger().warn(f'Button index {enable_button} out of range! Max: {len(msg.buttons)-1}')
+            return
+
         # 有効化ボタン（L1）が押されているか確認
         if msg.buttons[enable_button] == 1:
             # スティック入力の取得 (-1.0 ～ 1.0)
-            v_l = msg.axes[axis_left]
-            v_r = msg.axes[axis_right]
-            
-            # タンクドライブから Twist (linear.x, angular.z) への変換
-            # 前進速度は左右の平均
-            twist.linear.x = ((v_l + v_r) / 2.0) * scale_linear
-            # 旋回速度は左右の差
-            # 左前進(v_l=1), 右後退(v_r=-1) で右旋回(CW:負値) になるように計算
-            twist.angular.z = ((v_r - v_l) / 2.0) * scale_angular
+            if len(msg.axes) > axis_right:
+                v_l = msg.axes[axis_left]
+                v_r = msg.axes[axis_right]
+                
+                # タンクドライブから Twist (linear.x, angular.z) への変換
+                twist.linear.x = ((v_l + v_r) / 2.0) * scale_linear
+                twist.angular.z = ((v_r - v_l) / 2.0) * scale_angular
+                
+                self.get_logger().info(f'Publishing: Linear={twist.linear.x:.2f}, Angular={twist.angular.z:.2f}')
+            else:
+                self.get_logger().warn(f'Axis index out of range! Left:{axis_left}, Right:{axis_right}, Max:{len(msg.axes)-1}')
+        else:
+            # L1が押されていないときはログを間引いて出すか、停止コマンドを送る
+            pass
             
         self.publisher_.publish(twist)
 

@@ -9,13 +9,14 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
 def generate_launch_description():
+    pkg_share = get_package_share_directory('mirs')
+    
     esp_port = DeclareLaunchArgument(
         'esp_port', default_value='/dev/ttyUSB1',
         description='Set esp32 usb port.')
     
-    # YAMLファイルのパス（エラーが起きるときは絶対パスに変更を推奨）
-    config_file_path = "/home/sawara/mirs_ws/src/mirs_mg5/mirs/config/config.yaml"
-    #config_file_path = your_file_path
+    # YAMLファイルのパス
+    config_file_path = os.path.join(pkg_share, 'config', 'config.yaml')
 
     odometry_node = Node(
         package='mirs',
