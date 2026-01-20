@@ -30,7 +30,7 @@ def generate_launch_description():
             mirs_share_dir,
             'config',
             'slam_toolbox_config.yaml'),
-        description='/root/projects/mirsws/src/mirs_mg5/mirs/rviz/default.rviz')
+        description='/root/projects/mirsws/src/mirs_mg5/mirs/config/slam_toolbox_config.yaml')
 
     # slam_toolbox ノードの定義
     slam_node = Node(
@@ -52,7 +52,7 @@ def generate_launch_description():
             mirs_share_dir, # install フォルダの .rviz を使う
             'rviz',
             'default.rviz'),
-        description='The full path to the Rviz config file'
+        description='/root/projects/mirsws/src/mirs_mg5/mirs/rviz/default.rviz'
     )
 
     # Rviz ノードの定義
