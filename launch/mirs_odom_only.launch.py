@@ -72,7 +72,7 @@ def generate_launch_description():
     # Robot State Publisher (URDF)
     urdf_file_name = 'mirs.urdf'
     urdf_path = os.path.join(
-        get_package_share_directory('mirs_description'),
+        get_package_share_directory('mirs'),
         'urdf',
         urdf_file_name)
     with open(urdf_path, 'r') as infp:
