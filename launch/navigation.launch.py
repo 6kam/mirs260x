@@ -19,8 +19,7 @@ def generate_launch_description():
     
     map_yaml_file = DeclareLaunchArgument(
         'map',
-        default_value=default_map_path,
-        description='/root/projects/mirsws/src/mirs_mg5/mirs/maps/my_mirs_map.yaml'
+        default_value=default_map_path
     )
 
     # 3. MIRS本体のハードウェア（odom, /scan, micro-ros, TF）を起動

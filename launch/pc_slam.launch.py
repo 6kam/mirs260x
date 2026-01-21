@@ -30,7 +30,7 @@ def generate_launch_description():
             mirs_share_dir,
             'config',
             'slam_toolbox_config.yaml')
-        )
+    )
 
     # slam_toolbox ノードの定義
     slam_node = Node(
