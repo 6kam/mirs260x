@@ -29,8 +29,8 @@ def generate_launch_description():
         default_value=os.path.join(
             mirs_share_dir,
             'config',
-            'slam_toolbox_config.yaml'),
-        description='slam_toolbox_config_file')
+            'slam_toolbox_config.yaml')
+        )
 
     # slam_toolbox ノードの定義
     slam_node = Node(
@@ -51,8 +51,7 @@ def generate_launch_description():
         default_value=os.path.join(
             mirs_share_dir, # install フォルダの .rviz を使う
             'rviz',
-            'default.rviz'),
-        description='rviz2_file'
+            'default.rviz')
     )
 
     # Rviz ノードの定義
