@@ -29,7 +29,9 @@ amcl:
     robot_model_type: "nav2_amcl::DifferentialMotionModel"
     save_pose_rate: 0.5
     sigma_hit: 0.2
-    tf_broadcast: false
+    #tf_broadcast: false
+    tf_broadcast: true
+    initial_pose: {x: 0.0, y: 0.0, yaw: 0.0}  # 起動時の初期位置を原点に固定
     transform_tolerance: 1.0
     update_min_a: 0.2
     update_min_d: 0.25
@@ -234,11 +236,11 @@ local_costmap:
       # robot_radius: 0.22
       footprint: "[ [0.25, 0.25], [0.25, -0.25], [-0.25, -0.25], [-0.25, 0.25] ]" # 50cm x 50cm
       plugins: ["voxel_layer", "cone_layer", "inflation_layer"]
-      cone_layer:
-        plugin: "cone_detector::ConeCostmapLayer"
-        enabled: True
-        cone_inflation_radius: 0.16
-        cone_topic: "/accumulated_cones"
+      # cone_layer:
+      #  plugin: "cone_detector::ConeCostmapLayer"
+      #  enabled: True
+      #  cone_inflation_radius: 0.16
+      #  cone_topic: "/accumulated_cones"
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 10.0
