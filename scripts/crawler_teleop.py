@@ -32,30 +32,25 @@ class TankTeleop(Node):
         scale_linear = self.get_parameter('scale_linear').value
         scale_angular = self.get_parameter('scale_angular').value
         
-        # --- 詳細デバッグログ ---
-        self.get_logger().info(f'Axes: {[f"{a:.2f}" for a in msg.axes]}, Buttons: {msg.buttons}')
-        # ----------------------
+        # --- 有効化ボタンの判定をデバッグのため無効化 (常にTrue) ---
+        is_enabled = True
+        # ---------------------------------------------------
 
         twist = Twist()
-        
-        # 有効化ボタンの判定（デバッグのため一時的に常にTrue）
-        is_enabled = True
-        # if len(msg.buttons) > enable_button:
-        #     if msg.buttons[enable_button] == 1:
-        #         is_enabled = True
         
         if is_enabled:
             if len(msg.axes) > max(axis_left, axis_right):
                 v_l = msg.axes[axis_left]
                 v_r = msg.axes[axis_right]
                 
+                # タンクデライブの計算
                 twist.linear.x = ((v_l + v_r) / 2.0) * scale_linear
                 twist.angular.z = ((v_r - v_l) / 2.0) * scale_angular
                 
-                self.get_logger().info(f'Enabled(BTN {enable_button}) -> Linear: {twist.linear.x:.2f}, Angular: {twist.angular.z:.2f}')
+                self.get_logger().info(f'DEBUG_RUN: L={v_l:.2f}, R={v_r:.2f} -> Lin={twist.linear.x:.2f}, Ang={twist.angular.z:.2f}')
             else:
                 self.get_logger().warn(f'Axis index error! Need max {max(axis_left, axis_right)}, but got {len(msg.axes)}')
-        
+            
         self.publisher_.publish(twist)
 
 def main(args=None):
