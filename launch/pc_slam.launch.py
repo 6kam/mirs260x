@@ -3,6 +3,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -13,12 +14,17 @@ def generate_launch_description():
     mirs_share_dir = get_package_share_directory('mirs')
 
     # --- 1. mirs.launch.py（ハードウェア起動）のインクルード ---
-    # mirs.launch.py をインクルードする設定
-    # これで odometry, micro_ros_agent, lidar, 正しいTF が起動する
     mirs_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(mirs_share_dir, 'launch', 'mirs.launch.py')
-        )
+        ),
+        launch_arguments={'use_ekf_global': 'false'}.items()
+    )
+    
+    use_rviz = DeclareLaunchArgument(
+        'use_rviz',
+        default_value='true',
+        description='Whether to start RViz'
     )
 
     # --- 2. SLAM (slam_toolbox) の設定 ---
@@ -64,6 +70,7 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': False} # 実時間で動作させる
         ],
+        condition=IfCondition(LaunchConfiguration('use_rviz'))
     )
 
     # --- 4. 起動するノードをリスト化 ---
@@ -72,6 +79,7 @@ def generate_launch_description():
     # 引数の宣言を追加
     ld.add_action(declare_arg_slam_config_file)
     ld.add_action(declare_arg_rviz2_config_path)
+    ld.add_action(use_rviz)
 
     # 起動するノードを追加
     ld.add_action(mirs_launch)   # T1 の役割

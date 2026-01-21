@@ -2,6 +2,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
@@ -22,12 +23,19 @@ def generate_launch_description():
         default_value=default_map_path
     )
 
+    use_rviz = DeclareLaunchArgument(
+        'use_rviz',
+        default_value='true',
+        description='Whether to start RViz'
+    )
+
     # 3. MIRS本体のハードウェア（odom, /scan, micro-ros, TF）を起動
     # (以前 T1 で実行していた mirs.launch.py をインクルードする)
     mirs_hardware_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(mirs_share_dir, 'launch', 'mirs.launch.py')
-        )
+        ),
+        launch_arguments={'use_ekf_global': 'false'}.items()
     )
 
     # 5. Nav2 の設定ファイル（mirsパッケージのものを使用）
@@ -60,12 +68,14 @@ def generate_launch_description():
         ),
         launch_arguments={
             'rviz_config': rviz_config_file
-        }.items()
+        }.items(),
+        condition=IfCondition(LaunchConfiguration('use_rviz'))
     )
 
     # 9. 起動するものをリストにして返す
     return LaunchDescription([
         map_yaml_file,         # マップ引数
+        use_rviz,              # RViz起動フラグ
         mirs_hardware_launch,  # MIRS本体 (T1の代わり)
         nav2_bringup_launch,   # Nav2本体 (T2の代わり)
         rviz_node              # Rviz (T3の代わり)

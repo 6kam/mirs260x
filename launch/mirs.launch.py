@@ -3,6 +3,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -24,6 +25,10 @@ def generate_launch_description():
     use_sim_time = DeclareLaunchArgument(
         'use_sim_time', default_value='false',
         description='Use simulated clock if true')
+    
+    use_ekf_global = DeclareLaunchArgument(
+        'use_ekf_global', default_value='true',
+        description='Whether to start the global EKF node.')
     
     # --- 設定ファイルのパス ---
     # 既存の設定ファイル
@@ -114,7 +119,8 @@ def generate_launch_description():
         name='ekf_filter_node_global',
         output='screen',
         parameters=[ekf_global_config_path, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        remappings=[('/odometry/filtered', '/odometry/global')]
+        remappings=[('/odometry/filtered', '/odometry/global')],
+        condition=IfCondition(LaunchConfiguration('use_ekf_global'))
     )
 
     # --- 起動リストの作成 ---
@@ -123,6 +129,7 @@ def generate_launch_description():
     ld.add_action(esp_port)
     ld.add_action(lidar_port)
     ld.add_action(use_sim_time)
+    ld.add_action(use_ekf_global)
 
     ld.add_action(odometry_node)
     ld.add_action(parameter_node)
