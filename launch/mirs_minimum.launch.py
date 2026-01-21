@@ -23,7 +23,7 @@ def generate_launch_description():
         executable='odometry_publisher',
         name='odometry_publisher',
         output='screen',
-        parameters=[config_file_path]  # 修正点: カンマを削除して適切にリストとして指定
+        parameters=[config_file_path]
     )
 
     parameter_node = Node(
@@ -31,7 +31,7 @@ def generate_launch_description():
         executable='parameter_publisher',
         name='parameter_publisher',
         output='screen',
-        parameters=[config_file_path]  # 修正点: カンマを削除して適切にリストとして指定
+        parameters=[config_file_path]
     )
 
     micro_ros = Node(
