@@ -235,7 +235,7 @@ local_costmap:
       # robot_radius: 0.22
       # robot_radius: 0.22
       footprint: "[ [0.25, 0.25], [0.25, -0.25], [-0.25, -0.25], [-0.25, 0.25] ]" # 50cm x 50cm
-      plugins: ["voxel_layer", "cone_layer", "inflation_layer"]
+      plugins: ["voxel_layer", "inflation_layer"]
       # cone_layer:
       #  plugin: "cone_detector::ConeCostmapLayer"
       #  enabled: True
@@ -287,12 +287,13 @@ global_costmap:
       height: 50
       origin_x: -25.0
       origin_y: -25.0
-      plugins: ["obstacle_layer", "cone_layer", "inflation_layer"]
-      cone_layer:
-        plugin: "cone_detector::ConeCostmapLayer"
-        enabled: True
-        cone_inflation_radius: 0.16
-        cone_topic: "/accumulated_cones"
+      plugins: ["obstacle_layer", "inflation_layer"]
+      # delete corn plugins
+      # cone_layer:
+      #   plugin: "cone_detector::ConeCostmapLayer"
+      #   enabled: True
+      #   cone_inflation_radius: 0.16
+      #   cone_topic: "/accumulated_cones"
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
