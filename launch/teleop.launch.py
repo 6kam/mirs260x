@@ -5,7 +5,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('mirs')
-    config_file = os.path.join(pkg_share, 'config', 'dualshock4.yaml')
+    config_file = os.path.join(pkg_share, 'config', 'joystick.yaml')
 
     return LaunchDescription([
         Node(
@@ -20,8 +20,8 @@ def generate_launch_description():
         ),
         Node(
             package='mirs',
-            executable='tank_teleop.py',
-            name='tank_teleop_node',
+            executable='crawler_teleop.py',
+            name='crawler_teleop_node',
             parameters=[config_file],
         )
     ])

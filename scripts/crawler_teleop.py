@@ -61,9 +61,13 @@ class TankTeleop(Node):
 def main(args=None):
     rclpy.init(args=args)
     tank_teleop = TankTeleop()
-    rclpy.spin(tank_teleop)
-    tank_teleop.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(tank_teleop)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        tank_teleop.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

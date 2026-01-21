@@ -1,4 +1,4 @@
-tank_teleop_node:
+crawler_teleop_node:
   ros__parameters:
     axis_left: 1   # Left stick vertical (2nd)
     axis_right: 3  # Right stick vertical (4th)
