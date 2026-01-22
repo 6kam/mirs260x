@@ -56,10 +56,9 @@ def generate_launch_description():
     # bringup_launch.py を使用することで map_server と AMCL が自動的に起動する
     nav2_bringup_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(nav2_bringup_pkg, 'launch', 'bringup_launch.py')
+            os.path.join(nav2_bringup_pkg, 'launch', 'navigation_launch.py')
         ),
         launch_arguments={
-            'map': LaunchConfiguration('map'),
             'use_sim_time': LaunchConfiguration('use_sim_time'),
             'params_file': nav2_params_file,
             # 'use_robot_state_pub': 'False' # 必要に応じて有効化
@@ -119,12 +118,6 @@ def generate_launch_description():
     )
 
     # Delay Landmark Localizer to wait for TF tree to be ready
-    delayed_landmark_localizer_node = TimerAction(
-        period=5.0,
-        actions=[landmark_localizer_node]
-    )
-
-    # --- 7. Groot (v1) ---
     launch_groot_arg = DeclareLaunchArgument(
         'launch_groot',
         default_value='true',
