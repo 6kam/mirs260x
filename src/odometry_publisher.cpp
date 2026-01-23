@@ -9,9 +9,6 @@
 class OdometryPublisher : public rclcpp::Node
 {
 public:
-//     OdometryPublisher()
-//        : Node("odometry_publisher"), last_left_encoder_(0), last_right_encoder_(0),
-//        x_(0.0), y_(0.0), theta_(0.0)
 	OdometryPublisher()
 	:Node("odometry_publisher"), 
 	// すべてのエンコーダ変数を0で初期化する
