@@ -27,6 +27,9 @@ public:
         wheel_base = this->get_parameter("wheel_base").as_double();
         count_per_rev = this->get_parameter("count_per_rev").as_double();
 
+        RCLCPP_INFO(this->get_logger(), "odometry params: wheel_radius=%.6f wheel_base=%.6f count_per_rev=%.1f",
+                wheel_radius, wheel_base, count_per_rev);
+
         // サブスクライバーの作成
         encoder_sub_ = this->create_subscription<std_msgs::msg::Int32MultiArray>(
             "/encoder", 10, std::bind(&OdometryPublisher::encoder_callback, this, std::placeholders::_1));
