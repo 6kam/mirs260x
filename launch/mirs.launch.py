@@ -35,7 +35,8 @@ def generate_launch_description():
     config_file_path = os.path.join(pkg_share, 'config', 'config.yaml')
     
     ekf_config_path = os.path.join(pkg_share, 'config', 'ekf_params.yaml')
-    ekf_global_config_path = os.path.join(pkg_share, 'config', 'ekf_global_params.yaml')
+    #nav2ではglobal ekfは使わないのでコメントアウト
+    #ekf_global_config_path = os.path.join(pkg_share, 'config', 'ekf_global_params.yaml')
 
     # --- ノードの定義 ---
 
@@ -113,15 +114,15 @@ def generate_launch_description():
     )
 
     # Global EKF (map -> odom)
-    ekf_node_global = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node_global',
-        output='screen',
-        parameters=[ekf_global_config_path, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        remappings=[('/odometry/filtered', '/odometry/global')],
-        condition=IfCondition(LaunchConfiguration('use_ekf_global'))
-    )
+    #ekf_node_global = Node(
+    #    package='robot_localization',
+    #    executable='ekf_node',
+    #    name='ekf_filter_node_global',
+    #    output='screen',
+    #    parameters=[ekf_global_config_path, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
+    #    remappings=[('/odometry/filtered', '/odometry/global')],
+    #    condition=IfCondition(LaunchConfiguration('use_ekf_global'))
+    #)
 
     # --- 起動リストの作成 ---
     ld = LaunchDescription()
@@ -139,8 +140,8 @@ def generate_launch_description():
     # ld.add_action(tf2_ros_node)
     ld.add_action(robot_state_publisher_node)
     
-    # ★追加: EKFを起動リストに追加
+    # ★追加: EKFを起動リストに追加 (nav2ではglobal ekfは使わないのでコメントアウト)
     ld.add_action(ekf_node_local)
-    ld.add_action(ekf_node_global)
+    #ld.add_action(ekf_node_global)
 
     return ld

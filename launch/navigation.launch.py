@@ -35,7 +35,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(mirs_share_dir, 'launch', 'mirs.launch.py')
         ),
-        launch_arguments={'use_ekf_global': 'false'}.items()
+        #launch_arguments={'use_ekf_global': 'false'}.items()
     )
 
     # 5. Nav2 の設定ファイル（mirsパッケージのものを使用）
@@ -56,7 +56,7 @@ def generate_launch_description():
         # Nav2に渡す引数
         launch_arguments={
             'map': LaunchConfiguration('map'), # 引数で指定されたマップを使用
-            'use_sim_time': 'False',           # 実機ロボットを使う
+            'use_sim_time': LaunchConfiguration('use_sim_time'),
             'params_file': nav2_params_file,   # Nav2の設定ファイルを指定
         }.items()
     )
@@ -78,5 +78,5 @@ def generate_launch_description():
         use_rviz,              # RViz起動フラグ
         mirs_hardware_launch,  # MIRS本体 (T1の代わり)
         nav2_bringup_launch,   # Nav2本体 (T2の代わり)
-        rviz_node              # Rviz (T3の代わり)
+        rviz_node,              # Rviz (T3の代わり)
     ])
