@@ -29,6 +29,12 @@ def generate_launch_description():
         description='Whether to start RViz'
     )
 
+    use_sim_time = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='false',
+        description='Use simulation (Gazebo) clock if true'
+    )
+
     # 3. MIRS本体のハードウェア（odom, /scan, micro-ros, TF）を起動
     # (以前 T1 で実行していた mirs.launch.py をインクルードする)
     mirs_hardware_launch = IncludeLaunchDescription(
@@ -76,6 +82,7 @@ def generate_launch_description():
     return LaunchDescription([
         map_yaml_file,         # マップ引数
         use_rviz,              # RViz起動フラグ
+        use_sim_time,          # シミュレーション時間フラグ
         mirs_hardware_launch,  # MIRS本体 (T1の代わり)
         nav2_bringup_launch,   # Nav2本体 (T2の代わり)
         rviz_node,              # Rviz (T3の代わり)

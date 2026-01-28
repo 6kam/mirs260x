@@ -1,12 +1,12 @@
 amcl:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
     alpha1: 0.2
-    alpha2: 0.2
+    alpha2: 0.1
     alpha3: 0.2
     alpha4: 0.2
     alpha5: 0.2
-    base_frame_id: "base_footprint"
+    base_frame_id: "base_link"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.9
     beam_skip_threshold: 0.3
@@ -23,8 +23,8 @@ amcl:
     odom_frame_id: "odom"
     pf_err: 0.05
     pf_z: 0.99
-    recovery_alpha_fast: 0.0
-    recovery_alpha_slow: 0.0
+    recovery_alpha_fast: 0.1
+    recovery_alpha_slow: 0.001
     resample_interval: 1
     robot_model_type: "nav2_amcl::DifferentialMotionModel"
     save_pose_rate: 0.5
@@ -44,9 +44,9 @@ amcl:
 
 bt_navigator:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
     global_frame: map
-    robot_base_frame: base_footprint
+    robot_base_frame: base_link
     odom_topic: /odom
     bt_loop_duration: 10
     default_server_timeout: 20
@@ -106,35 +106,26 @@ bt_navigator:
 
 bt_navigator_navigate_through_poses_rclcpp_node:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
 
 bt_navigator_navigate_to_pose_rclcpp_node:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
 
 controller_server:
   ros__parameters:
-    #use_sim_time: False
     controller_frequency: 20.0
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
     failure_tolerance: 0.3
     progress_checker_plugin: "progress_checker"
-    goal_checker_plugins: ["general_goal_checker"] # "precise_goal_checker"
+    goal_checker_plugins: ["general_goal_checker"]
     controller_plugins: ["FollowPath", "CoverageController"]
-
-    # Progress checker parameters
     progress_checker:
       plugin: "nav2_controller::SimpleProgressChecker"
-      required_movement_radius: 0.1   # 0.3 -> 0.1 (緩和)
-      movement_time_allowance: 30.0   # 15.0 -> 30.0 (緩和)
-    # Goal checker parameters
-    #precise_goal_checker:
-    #  plugin: "nav2_controller::SimpleGoalChecker"
-    #  xy_goal_tolerance: 0.25
-    #  yaw_goal_tolerance: 0.25
-    #  stateful: True
+      required_movement_radius: 0.1
+      movement_time_allowance: 30.0
     general_goal_checker:
       stateful: True
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -227,8 +218,8 @@ local_costmap:
       update_frequency: 5.0
       publish_frequency: 2.0
       global_frame: odom
-      robot_base_frame: base_footprint
-      #use_sim_time: False
+      robot_base_frame: base_link
+      use_sim_time: False
       rolling_window: true
       width: 5
       height: 5
@@ -276,8 +267,8 @@ global_costmap:
       update_frequency: 1.0
       publish_frequency: 1.0
       global_frame: map
-      robot_base_frame: base_footprint
-      #use_sim_time: False
+      robot_base_frame: base_link
+      use_sim_time: False
       # robot_radius: 0.22
       footprint: "[ [0.25, 0.25], [0.25, -0.25], [-0.25, -0.25], [-0.25, 0.25] ]" # 50cm x 50cm
       resolution: 0.05
@@ -322,7 +313,7 @@ map_server:
     #use_sim_time: False
     # Overridden in launch by the "map" launch configuration or provided default value.
     # To use in yaml, remove the default "map" value in the tb3_simulation_launch.py file & provide full path to map below.
-    yaml_filename: "root/project/mirsws/src/mirs_mg5/mirs/maps/rouka3.yaml"
+    yaml_filename: "/root/projects/mirsws/src/mirs_mg5/mirs/maps/rouka3.yaml"
 
 map_saver:
   ros__parameters:
@@ -335,7 +326,7 @@ map_saver:
 planner_server:
   ros__parameters:
     expected_planner_frequency: 20.0
-    #use_sim_time: False
+    use_sim_time: False
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
@@ -345,7 +336,7 @@ planner_server:
 
 smoother_server:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
     smoother_plugins: ["simple_smoother"]
     simple_smoother:
       plugin: "nav2_smoother::SimpleSmoother"
@@ -371,9 +362,9 @@ behavior_server:
     assisted_teleop:
       plugin: "nav2_behaviors/AssistedTeleop"
     global_frame: odom
-    robot_base_frame: base_footprint
+    robot_base_frame: base_link
     transform_tolerance: 0.1
-    #use_sim_time: false
+    use_sim_time: false
     simulate_ahead_time: 2.0
     max_rotational_vel: 1.0
     min_rotational_vel: 0.4
@@ -381,11 +372,11 @@ behavior_server:
 
 robot_state_publisher:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
 
 waypoint_follower:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
     loop_rate: 20
     stop_on_failure: false
     waypoint_task_executor_plugin: "wait_at_waypoint"
@@ -396,7 +387,7 @@ waypoint_follower:
 
 velocity_smoother:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
     smoothing_frequency: 20.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
@@ -411,7 +402,7 @@ velocity_smoother:
 
 lifecycle_manager_navigation:
   ros__parameters:
-    #use_sim_time: False
+    use_sim_time: False
     autostart: true
     node_names: ['map_server', 'amcl', 'planner_server', 'controller_server', 'behavior_server', 'bt_navigator', 'waypoint_follower', 'smoother_server', 'velocity_smoother']
     bond_timeout: 10.0
