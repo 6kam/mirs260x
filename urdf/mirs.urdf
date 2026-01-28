@@ -29,13 +29,13 @@
   <link name="base_footprint"/>
 
   <!--==============================================================
-      base_joint：base_footprint → base_link の固定ジョイント
-      base_link を地面座標系（base_footprint）に対して 10cm 上に配置。
+      base_joint：base_link → base_footprint の固定ジョイント
+      base_footprint を地面座標系として base_link の下に配置。
   ==============================================================-->
   <joint name="base_joint" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
-    <origin xyz="0 0 0.0391" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 -0.0391" rpy="0 0 0"/>
   </joint>
 
   <!--==============================================================
@@ -82,7 +82,7 @@
   <joint name="left_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="left_wheel"/>
-    <origin xyz="0 0.212 0" rpy="0 0 0"/>
+    <origin xyz="0 0.19 0" rpy="0 0 0"/>
     <!-- base_link の中心から左側（y+方向）に 0.225m 位置。 -->
     <axis xyz="0 1 0"/> <!-- Y軸回りに回転（ホイール回転軸） -->
   </joint>
@@ -104,7 +104,7 @@
   <joint name="right_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="right_wheel"/>
-    <origin xyz="0 -0.212 0" rpy="0 0 0"/>
+    <origin xyz="0 -0.19 0" rpy="0 0 0"/>
     <!-- base_link から右側（y-方向）に 0.225m -->
     <axis xyz="0 1 0"/> <!-- こちらも Y軸回転 -->
   </joint>
