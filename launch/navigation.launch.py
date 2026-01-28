@@ -16,7 +16,7 @@ def generate_launch_description():
 
     # --- 引数の定義 ---
     # マップファイルのデフォルトパス (パッケージ内の maps/my_mirs_map.yaml)
-    default_map_path = os.path.join(mirs_share_dir, 'maps', 'rouka5.yaml')
+    default_map_path = os.path.join(mirs_share_dir, 'maps', 'rouka7.yaml')
     
     map_yaml_file = DeclareLaunchArgument(
         'map',

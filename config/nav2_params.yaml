@@ -162,11 +162,11 @@ controller_server:
       stateful: True
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
       BaseObstacle.scale: 0.001
-      PathAlign.scale: 16.0
+      PathAlign.scale: 8.0     # 16.0 -> 8.0
       PathAlign.forward_point_distance: 0.1
       GoalAlign.scale: 12.0
       GoalAlign.forward_point_distance: 0.1
-      PathDist.scale: 24.0
+      PathDist.scale: 16.0      # 24.0 -> 16.0
       GoalDist.scale: 24.0
       RotateToGoal.scale: 32.0
       RotateToGoal.slowing_factor: 5.0
@@ -202,11 +202,11 @@ controller_server:
       stateful: True
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
       BaseObstacle.scale: 0.001
-      PathAlign.scale: 16.0
+      PathAlign.scale: 8.0     # 16.0 -> 8.0
       PathAlign.forward_point_distance: 0.1
       GoalAlign.scale: 12.0
       GoalAlign.forward_point_distance: 0.1
-      PathDist.scale: 24.0
+      PathDist.scale: 16.0      # 24.0 -> 16.0
       GoalDist.scale: 24.0
       RotateToGoal.scale: 32.0
       RotateToGoal.slowing_factor: 5.0
@@ -234,8 +234,8 @@ local_costmap:
       #  cone_topic: "/accumulated_cones"
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 10.0 # costmap parameter
-        inflation_radius: 0.5  # 0.3 -> 0.5 (危険範囲を拡大)
+        cost_scaling_factor: 10.0 # 10.0 -> 15.0 (コストの減衰を速くする)
+        inflation_radius: 0.7  # 0.3 -> 0.5 (危険範囲を拡大)
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -313,7 +313,7 @@ map_server:
     #use_sim_time: False
     # Overridden in launch by the "map" launch configuration or provided default value.
     # To use in yaml, remove the default "map" value in the tb3_simulation_launch.py file & provide full path to map below.
-    yaml_filename: "/root/projects/mirsws/src/mirs_mg5/mirs/maps/rouka5.yaml"
+    yaml_filename: "/root/projects/mirsws/src/mirs_mg5/mirs/maps/rouka7.yaml"
 
 map_saver:
   ros__parameters:
