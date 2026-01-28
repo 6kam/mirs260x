@@ -82,7 +82,7 @@
   <joint name="left_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="left_wheel"/>
-    <origin xyz="0 0.19 0" rpy="0 0 0"/>
+    <origin xyz="0 0.195 0" rpy="0 0 0"/>
     <!-- base_link の中心から左側（y+方向）に 0.225m 位置。 -->
     <axis xyz="0 1 0"/> <!-- Y軸回りに回転（ホイール回転軸） -->
   </joint>
@@ -104,7 +104,7 @@
   <joint name="right_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="right_wheel"/>
-    <origin xyz="0 -0.19 0" rpy="0 0 0"/>
+    <origin xyz="0 -0.195 0" rpy="0 0 0"/>
     <!-- base_link から右側（y-方向）に 0.225m -->
     <axis xyz="0 1 0"/> <!-- こちらも Y軸回転 -->
   </joint>

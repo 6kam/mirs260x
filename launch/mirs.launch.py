@@ -101,6 +101,14 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_desc, 'use_sim_time': LaunchConfiguration('use_sim_time')}],
     )
 
+    # Joint State Publisher (ホイールの回転角度を配信)
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
+    )
+
     # robot_localization (EKF) ノード x2
 
     # Local EKF (odom -> base_link)
@@ -139,6 +147,7 @@ def generate_launch_description():
 
     # ld.add_action(tf2_ros_node)
     ld.add_action(robot_state_publisher_node)
+    ld.add_action(joint_state_publisher_node)
     
     # ★追加: EKFを起動リストに追加 (nav2ではglobal ekfは使わないのでコメントアウト)
     ld.add_action(ekf_node_local)
