@@ -8,10 +8,7 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
 
-    # 1. 自分のパッケージの 'share' ディレクトリへのパス
     mirs_share_dir = get_package_share_directory('mirs')
-
-    # 2. Nav2 パッケージの 'share' ディレクトリへのパス
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
 
     # --- 引数の定義 ---
@@ -36,7 +33,7 @@ def generate_launch_description():
     )
 
     # 3. MIRS本体のハードウェア（odom, /scan, micro-ros, TF）を起動
-    # (以前 T1 で実行していた mirs.launch.py をインクルードする)
+    # mirs.launch.py のインクルード
     mirs_hardware_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(mirs_share_dir, 'launch', 'mirs.launch.py')

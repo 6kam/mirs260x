@@ -28,7 +28,6 @@ def generate_launch_description():
     )
 
     # --- 2. SLAM (slam_toolbox) の設定 ---
-    # slam_toolbox の設定ファイルへのパス
     slam_config_file = LaunchConfiguration('slam_config_file')
     declare_arg_slam_config_file = DeclareLaunchArgument(
         'slam_config_file',
@@ -45,17 +44,16 @@ def generate_launch_description():
         output='screen',
         parameters=[
             slam_config_file,
-            {'use_sim_time': False} # 実時間で動作させる
+            {'use_sim_time': False}
         ],
     )
 
     # --- 3. Rviz の設定 ---
-    # Rviz の設定ファイルへのパス
     rviz2_file = LaunchConfiguration('rviz2_file')
     declare_arg_rviz2_config_path = DeclareLaunchArgument(
         'rviz2_file', 
         default_value=os.path.join(
-            mirs_share_dir, # install フォルダの .rviz を使う
+            mirs_share_dir,
             'rviz',
             'default.rviz')
     )
@@ -68,7 +66,7 @@ def generate_launch_description():
         output='screen',
         arguments=['-d', rviz2_file],
         parameters=[
-            {'use_sim_time': False} # 実時間で動作させる
+            {'use_sim_time': False}
         ],
         condition=IfCondition(LaunchConfiguration('use_rviz'))
     )

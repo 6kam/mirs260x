@@ -149,7 +149,6 @@ def generate_launch_description():
     ld.add_action(robot_state_publisher_node)
     ld.add_action(joint_state_publisher_node)
     
-    # ★追加: EKFを起動リストに追加 (nav2ではglobal ekfは使わないのでコメントアウト)
     ld.add_action(ekf_node_local)
     #ld.add_action(ekf_node_global)
 
