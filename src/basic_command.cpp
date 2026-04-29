@@ -18,6 +18,7 @@ int main(int argc, char **argv)
     auto client = node->create_client<mirs_msgs::srv::BasicCommand>("esp_cmd");
 
     // YAMLファイルからパラメータを読み込むための宣言
+		// 左はyamlから取る値、右はデフォルト値j
     node->declare_parameter("param1", 1.0);
     node->declare_parameter("param2", 0.0);
     node->declare_parameter("param3", 0.0);
