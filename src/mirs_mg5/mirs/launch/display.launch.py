@@ -4,7 +4,6 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    # パッケージ名とURDFファイル名を指定
     package_name = 'mirs'
     urdf_file_name = 'mirs.urdf'
 
