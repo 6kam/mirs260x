@@ -7,6 +7,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+from launch.actions import ExecuteProcess
+from launch.conditions import IfCondition
+
 def generate_launch_description():
     # --- パッケージディレクトリの取得 ---
     mirs_pkg = get_package_share_directory('mirs')
@@ -123,9 +126,6 @@ def generate_launch_description():
         default_value='true',
         description='Launch Groot for behavior tree visualization'
     )
-
-    from launch.actions import ExecuteProcess
-    from launch.conditions import IfCondition
 
     groot_executable = DeclareLaunchArgument(
         'groot_executable',

@@ -11,10 +11,8 @@ int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
 
-  std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("reboot");
-  rclcpp::Client<mirs_msgs::srv::SimpleCommand>::SharedPtr client =
-    node->create_client<mirs_msgs::srv::SimpleCommand>("reboot");
-
+  auto node = rclcpp::Node::make_shared("reboot");
+  auto client = node->create_client<mirs_msgs::srv::SimpleCommand>("reboot");
   auto request = std::make_shared<mirs_msgs::srv::SimpleCommand::Request>();
 
   while (!client->wait_for_service(1s)) {

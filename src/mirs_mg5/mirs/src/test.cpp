@@ -17,8 +17,7 @@ int main(int argc, char **argv)
   }
 
   std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
-  rclcpp::Client<mirs_msgs::srv::Params>::SharedPtr client =
-    node->create_client<mirs_msgs::srv::Params>("Params");
+  rclcpp::Client<mirs_msgs::srv::Params>::SharedPtr client = node->create_client<mirs_msgs::srv::Params>("Params");
 
   auto request = std::make_shared<mirs_msgs::srv::Params::Request>();
   request->a = atoll(argv[1]);
