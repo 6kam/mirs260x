@@ -42,23 +42,6 @@ mirs_mg5 の標準的機能を備えた ROS 2 パッケージ（Docker 対応版
 - [USBIPD-WIN](https://github.com/dorssel/usbipd-win)（Windows WSL2 環境で USB 接続する場合のみ必要）
 - Arduino IDE（ESP32 に micro-ros-client を導入するため）
 
----
-
-## 含まれるパッケージ
-
-### mirs
-
-- ESP32 との通信（micro-ROS）
-- オドメトリ計算と TF 配信
-- ロボットモデル（URDF）
-- navigation2 / SLAM
-
-### mirs_msgs
-
-- カスタムメッセージ定義パッケージ
-
----
-
 ## つかいかた
 
 ### 1. ESP32 のセットアップ
