@@ -1,4 +1,4 @@
-# MIRS MG5 ROS 2 Package with Docker
+# MIRS 260x
 
 ---
 
