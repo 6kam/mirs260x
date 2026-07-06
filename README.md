@@ -31,30 +31,34 @@ mirs_mg5 の標準的機能を備えた ROS 2 パッケージ（Docker 対応版
 
 - cugo v3i
 - ESP32
-- PC
 - Cytron MD10C
+- RPLiDAR S1
 
 ### ソフトウェア
 
-- Linux（Arch Linux (Hyprland)、Ubuntu 24.04、WSL2 上の Arch Linux で動作確認済み）
-- Docker（Docker Desktop は不可）
+- Docker（Docker Desktop 不可）
 - Docker Compose
 - [USBIPD-WIN](https://github.com/dorssel/usbipd-win)（Windows WSL2 環境で USB 接続する場合のみ必要）
 - Arduino IDE（ESP32 に micro-ros-client を導入するため）
 
 ## つかいかた
 
-### 1. ESP32 のセットアップ
+### 1. ESP32とLiDAR の準備
 
-Arduino IDE に以下のソースコードとライブラリを導入します。
+まず、esp32にソースコードを送信する工程です。初回のみ行います。
+Arduino IDE に以下のソースコードとライブラリ、ボードマネージャーを導入します。
 
-- ESP32 用ソースコード：[mirs260x-esp](https://github.com/6kam/mirs_tanq_a_esp)
-  （元になったコード：[mirs240x/mirs24_esp32](https://github.com/mirs240x/mirs24_esp32.git)）
-- micro-ROS ライブラリ：[micro_ros_arduino_mirs240x](https://github.com/mirs240x/micro_ros_arduino_mirs240x)（zip で Arduino IDE にインポート）
+- ESP32 用ソースコード：[mirs260x-esp](https://github.com/6kam/mirs_tanq_a_esp)（元になったコード：[mirs240x/mirs24_esp32](https://github.com/mirs240x/mirs24_esp32.git)）
+- micro-ROS ライブラリ(zipでライブラリをインポートする)：[micro_ros_arduino_mirs240x](https://github.com/mirs240x/micro_ros_arduino_mirs240x)
+- ボードマネージャは esp32（Espressif Systems著）バージョン 2.x 系を導入し、導入後、ボードは **ESP32 Dev Module** を選択してください。
 
-> ボードマネージャは ESP32 用バージョン 2.x 系を導入し、ボードは **ESP32 Dev Module** を選択してください。
+esp32を接続し、ソースコードをコンパイル、送信してください。
 
-### 2. リポジトリのクローン
+完了後、ESP32とLiDARをROS2をPCに接続してください。
+このとき、LiDARを先に接続するようにしてください。（プログラム中ではLiDARがUSBポートの若い番号をとる前提でできています。もちろん変更もできます。起動するlaunchファイルの/dev/ttyUSB0と/dev/ttyUSB1を入れ替えます。）
+初回なのでここで接続しますが次回以降は少なくともdockerコンテナのビルド前に接続するようにしてください。
+
+### 2. リポジトリのクローン（初回のみ）
 
 ```bash
 git clone https://github.com/6kam/mirs260x.git
@@ -63,6 +67,8 @@ cd mirs260x/src
 git clone -b humble https://github.com/micro-ROS/micro-ROS-Agent.git
 git clone https://github.com/Slamtec/sllidar_ros2.git
 git clone -b humble https://github.com/micro-ROS/micro_ros_msgs.git
+
+cd ..
 ```
 
 `src` ディレクトリ以下に micro-ROS や sllidar_ros2 が配置されていることを確認してください。
@@ -70,7 +76,6 @@ git clone -b humble https://github.com/micro-ROS/micro_ros_msgs.git
 ### 3. Docker イメージのビルド
 
 ```bash
-cd ..
 docker compose build
 ```
 
@@ -88,6 +93,17 @@ docker compose exec mirs bash
 
 コンテナ内では以下のエイリアスが使用できます。
 
+```bash
+ru
+ri
+cb
+si
+```
+
+### エイリアス
+
+コンテナ内では以下のエイリアスが使用できます。
+
 | エイリアス | 実体 | 説明 |
 |---|---|---|
 | `ru`  | `rosdep update` | rosdep の更新 |
@@ -100,30 +116,12 @@ docker compose exec mirs bash
 | `slam`| `ros2 launch mirs slam.launch.py` | マップ作成 |
 | `nav` | `ros2 launch mirs nav.launch.py` | 自律走行 |
 
-また、コンテナ起動時に以下は自動で実行されています。
-
 ```bash
+# .bashrcに記述済み
 source /opt/ros/humble/setup.bash
 ```
 
-コンテナ内で以下を順番に実行してください。
-
-```bash
-ru
-ri
-cb
-si
-```
-
 #### 実行
-
-実行前に **LiDAR と ESP32 を PC に USB 接続** してください。
-LiDAR を先に接続することで `/dev/ttyUSB0` が LiDAR になります（launch 時にポート指定は不要です）。
-
-`docker-compose.yml` では接続時に以下のデバイスがマウントされます。
-
-- `/dev/ttyUSB0`：LiDAR
-- `/dev/ttyUSB1`：ESP32
 
 ```bash
 mirs   # 基本的なシステム起動
