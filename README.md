@@ -13,6 +13,8 @@ mirs_mg5 の標準的機能を備えた ROS 2 パッケージ（Docker 対応版
 2. **[mirs240x](https://github.com/mirs240x)** によるオリジナル版
    プロジェクトの基盤となる ROS 2 パッケージ群
 
+Dockerを採用することで開発環境をOSレベルで統一することができ、依存関係の競合の発生を抑え、より開発しやすくすること、また使用方法の文書作成および共有を目的にしています。
+
 ---
 
 ## ⚠️ 既知の問題点
@@ -41,12 +43,12 @@ mirs_mg5 の標準的機能を備えた ROS 2 パッケージ（Docker 対応版
 - [USBIPD-WIN](https://github.com/dorssel/usbipd-win)（Windows WSL2 環境で USB 接続する場合のみ必要）
 - Arduino IDE（ESP32 に micro-ros-client を導入するため）
 
-## つかいかた
+## 導入
 
 ### 1. ESP32とLiDAR の準備
 
 まず、esp32にソースコードを送信する工程です。初回のみ行います。
-Arduino IDE に以下のソースコードとライブラリ、ボードマネージャーを導入します。
+Arduino IDE に以下のソースコード、ライブラリ、ボードマネージャーを導入します。(Windowsを使用している場合はWSL上ではなく、Windows上にArduinoIDEとソースコードをダウンロードしてください。)
 
 - ESP32 用ソースコード：[mirs260x-esp](https://github.com/6kam/mirs_tanq_a_esp)（元になったコード：[mirs240x/mirs24_esp32](https://github.com/mirs240x/mirs24_esp32.git)）
 - micro-ROS ライブラリ(zipでライブラリをインポートする)：[micro_ros_arduino_mirs240x](https://github.com/mirs240x/micro_ros_arduino_mirs240x)
@@ -54,16 +56,19 @@ Arduino IDE に以下のソースコードとライブラリ、ボードマネ�
 
 esp32を接続し、ソースコードをコンパイル、送信してください。
 
-完了後、ESP32とLiDARをROS2をPCに接続してください。
-このとき、LiDARを先に接続するようにしてください。（プログラム中ではLiDARがUSBポートの若い番号をとる前提でできています。もちろん変更もできます。起動するlaunchファイルの/dev/ttyUSB0と/dev/ttyUSB1を入れ替えます。）
-初回なのでここで接続しますが次回以降は少なくともdockerコンテナのビルド前に接続するようにしてください。
+完了後、ESP32とLiDARをLiDARから順にPCに接続してください。
+混乱を避けるため、LiDARを先に接続するようにしてください。（プログラムはLiDARがUSBポートの若い番号をとる前提でできています。変更もできます。起動するlaunchファイルの/dev/ttyUSB0と/dev/ttyUSB1を入れ替えます。）
 
-### 2. リポジトリのクローン（初回のみ）
+### 2. リポジトリのクローン
+
+次に、ros2をメインで動かすpcにソースコードをダウンロードします。これについても初回のみ行います。
 
 ```bash
+# メインのソースコードのクローン
 git clone https://github.com/6kam/mirs260x.git
 cd mirs260x/src
 
+# 使用するパッケージのクローン(MicroROSやLiDARのパッケージ)
 git clone -b humble https://github.com/micro-ROS/micro-ROS-Agent.git
 git clone https://github.com/Slamtec/sllidar_ros2.git
 git clone -b humble https://github.com/micro-ROS/micro_ros_msgs.git
@@ -71,62 +76,74 @@ git clone -b humble https://github.com/micro-ROS/micro_ros_msgs.git
 cd ..
 ```
 
-`src` ディレクトリ以下に micro-ROS や sllidar_ros2 が配置されていることを確認してください。
+`src` ディレクトリ配下に micro-ROS や sllidar_ros2 が配置されていることを確認してください。
 
 ### 3. Docker イメージのビルド
 
+次に、Dockerイメージをビルドします。初回のみ行います。Dockerfileを書き換えない限りは再ビルドは不要です。
+
 ```bash
+# イメージのビルド
 docker compose build
 ```
 
 ### 4. コンテナの起動
 
+次にdockerコンテナを起動し、コンテナ内に入ります。ここの中でros2のコマンドを実行することになります。
+二回目以降の場合はコンテナ起動前にLiDARとESP32を接続してください。
+
 ```bash
-xhost +local:      # X11転送を許可（WSL 環境の場合は不要）
+# コンテナ内からのGUI転送許可
+xhost +local:      # X11転送を許可（WSLでは不要）
+
+# コンテナをバックグラウンドで起動
 docker compose up -d
+
+# コンテナ内のターミナルに入る
 docker compose exec mirs bash
 ```
 
-### 5. ROS 2 ノードのビルドと実行
+### 5. パッケージのビルド
 
 #### ビルド
 
-コンテナ内では以下のエイリアスが使用できます。
+次にコンテナ内でソースコードをビルドします。これによってインストールするパッケージやソフトウェアのバージョンが統一されます。
 
 ```bash
+# rosdepの更新
 ru
+# 依存パッケージのインストール
 ri
+# 全パッケージのビルド
 cb
+# ビルド結果の読み込み
 si
 ```
 
-### エイリアス
+ビルドが終わったら
 
-コンテナ内では以下のエイリアスが使用できます。
+#### 6. 実行
 
-| エイリアス | 実体 | 説明 |
-|---|---|---|
-| `ru`  | `rosdep update` | rosdep の更新 |
-| `ri`  | `rosdep install --from-path src --ignore-src -r -y` | 依存パッケージのインストール |
-| `cb`  | `colcon build --symlink-install` | 全パッケージをビルド |
-| `cbs` | `colcon build --symlink-install --packages-select` | 指定パッケージのみビルド |
-| `cbt` | `colcon build --symlink-install --packages-up-to` | 依存関係込みでビルド |
-| `si`  | `source install/setup.bash` | ビルド結果を読み込み |
-| `mirs`| `ros2 launch mirs mirs.launch.py` | システム起動 |
-| `slam`| `ros2 launch mirs slam.launch.py` | マップ作成 |
-| `nav` | `ros2 launch mirs nav.launch.py` | 自律走行 |
+次に、ros2コマンドのエイリアスを使って各ノード達を起動します。
 
 ```bash
-# .bashrcに記述済み
-source /opt/ros/humble/setup.bash
+# 基本的なシステム起動
+mirs
+# マップ作成
+slam
+# 自律走行
+nav
 ```
 
 #### 実行
 
 ```bash
-mirs   # 基本的なシステム起動
-slam   # マップ作成
-nav    # 自律走行
+# 基本的なシステム起動
+mirs
+# マップ作成
+slam
+# 自律走行
+nav
 ```
 
 **手順の目安：**
@@ -205,6 +222,26 @@ docker compose down
 ```
 
 ---
+### エイリアス
+
+コンテナ内では以下のエイリアスが使用できます。
+
+| エイリアス | 実体 | 説明 |
+|---|---|---|
+| `ru`  | `rosdep update` | rosdep の更新 |
+| `ri`  | `rosdep install --from-path src --ignore-src -r -y` | 依存パッケージのインストール |
+| `cb`  | `colcon build --symlink-install` | 全パッケージをビルド|
+| `cbs` | `colcon build --symlink-install --packages-select` | 指定パッケージのみビルド |
+| `cbt` | `colcon build --symlink-install --packages-up-to` | 依存関係込みでビルド |
+| `si`  | `source install/setup.bash` | ビルド結果を読み込み |
+| `mirs`| `ros2 launch mirs mirs.launch.py` | システム起動 |
+| `slam`| `ros2 launch mirs slam.launch.py` | マップ作成 |
+| `nav` | `ros2 launch mirs nav.launch.py` | 自律走行 |
+
+```bash
+# .bashrcに記述済み
+source /opt/ros/humble/setup.bash
+```
 
 ## ライセンス
 
