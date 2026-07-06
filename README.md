@@ -134,6 +134,8 @@ mirs
 LiDARの回転とターミナル上でのesp32との通信が表示されているか確認してください。
 
 #### 2. 別のターミナルからコンテナに入り、下記の内容を参考にエンコーダ値・オドメトリ値・走行試験などが正常か確認します。
+
+PID 値の設定ファイル：`mirs260x/src/mirs_mg5/mirs/config/config.yaml`
    
 ```bash
 # 前進（0.2 m/s）
@@ -156,7 +158,13 @@ ros2 run mirs odom_linear_test.py
 # 回転テスト
 ros2 run mirs odom_rotate_test.py
 ```
+```
+# ノード一覧の表示
+ros2 node list
 
+# トピック一覧の表示
+ros2 topic list
+```
 ```bash
 # トピックのデータ確認
 ros2 topic echo /odom
@@ -210,31 +218,17 @@ rviz2 上部ツールバーの 「Nav2 Goal」（または「2D Nav Goal」） �
 
 
 ---
-
-## 開発方法
-
-### ソースコードの編集
+## ソースコードの編集
 
 ホストマシンの `src/` はコンテナ内にマウントされているため、ホストで編集した内容は起動中のコンテナに即座に反映されます。
 
-### デバッグ
-
-PID 値の設定ファイル：`mirs260x/src/mirs_mg5/mirs/config/config.yaml`
-
-```bash
-# ノード一覧の表示
-ros2 node list
-
-# トピック一覧の表示
-ros2 topic list
-```
-
----
 
 ## コンテナの終了方法
 
 ```bash
+# コンテナから出る
 exit
+# コンテナを削除する(docker compose up -dで実行した分の削除)
 docker compose down
 ```
 
