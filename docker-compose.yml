@@ -1,7 +1,7 @@
 services:
   mirs:
     build: .
-    container_name: humble_mirs
+    container_name: humble_linux
     privileged: true
     network_mode: host
     ipc: host
