@@ -33,3 +33,4 @@ Thumbs.db
 .ssh
 .env
 secrets.yaml
+/src/micro-ROS-Agent
