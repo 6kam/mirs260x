@@ -28,13 +28,17 @@ public:
     RCLCPP_INFO(
         this->get_logger(),
         "odometry params: wheel_radius=%.6f wheel_base=%.6f count_per_rev=%.1f",
-        wheel_radius, wheel_base, count_per_rev);
+        wheel_radius,
+				wheel_base,
+				count_per_rev
+				);
 
     // サブスクライバーの作成
-    encoder_sub_ = this->create_subscription<std_msgs::msg::Int32MultiArray>(
-        "/encoder", 10,
-        std::bind(&OdometryPublisher::encoder_callback, this,
-                  std::placeholders::_1));
+		encoder_sub_ = this->create_subscription<std_msgs::msg::Int32MultiArray>(
+				"/encoder",
+				10,
+				std::bind(&OdometryPublisher::encoder_callback, this, std::placeholders::_1)
+				);
 
     // パブリッシャーの作成
     odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>("/odom", 10);
@@ -42,7 +46,8 @@ public:
     // タイマーで定期的にオドメトリをパブリッシュ
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(50),
-        std::bind(&OdometryPublisher::publish_odometry, this));
+        std::bind(&OdometryPublisher::publish_odometry, this)
+				);
 
     // TFブロードキャスター
     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
@@ -63,10 +68,8 @@ private:
     last_right_encoder_ = right_encoder_;
 
     // 車輪の回転角度（ラジアン）を計算
-    double delta_left_rad =
-        (delta_left / static_cast<double>(count_per_rev)) * 2.0 * M_PI;
-    double delta_right_rad =
-        (delta_right / static_cast<double>(count_per_rev)) * 2.0 * M_PI;
+    double delta_left_rad = (delta_left / static_cast<double>(count_per_rev)) * 2.0 * M_PI;
+    double delta_right_rad = (delta_right / static_cast<double>(count_per_rev)) * 2.0 * M_PI;
 
     // それぞれの車輪の移動距離を計算
     double left_distance = delta_left_rad * wheel_radius;

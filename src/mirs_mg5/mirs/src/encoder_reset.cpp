@@ -11,9 +11,8 @@ int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
 
-  std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("encoder_reset");
-  rclcpp::Client<mirs_msgs::srv::SimpleCommand>::SharedPtr client = node->create_client<mirs_msgs::srv::SimpleCommand>("reset_encoder");
-
+  auto node = rclcpp::Node::make_shared("encoder_reset");
+  auto client = node->create_client<mirs_msgs::srv::SimpleCommand>("reset_encoder");
   auto request = std::make_shared<mirs_msgs::srv::SimpleCommand::Request>();
 
   while (!client->wait_for_service(1s)) {
