@@ -38,15 +38,21 @@ def generate_launch_description():
     )
 
     # slam_toolbox ノードの定義
-    slam_node = Node(
-        package='slam_toolbox', 
-        executable='async_slam_toolbox_node',
-        output='screen',
-        parameters=[
-            slam_config_file,
-            {'use_sim_time': False}
-        ],
+    slam_toolbox_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('slam_toolbox'),
+                'launch',
+                'online_async_launch.py'
+            )
+        ),
+        launch_arguments={
+            'slam_params_file': slam_config_file,
+            'use_sim_time': 'false',
+            'autostart': 'true',
+        }.items()
     )
+ 
 
     # --- 3. Rviz の設定 ---
     rviz2_file = LaunchConfiguration('rviz2_file')
@@ -81,7 +87,7 @@ def generate_launch_description():
 
     # 起動するノードを追加
     ld.add_action(mirs_launch)   # T1 の役割
-    ld.add_action(slam_node)     # T2 の役割
+    ld.add_action(slam_toolbox_launch)     # T2 の役割
     ld.add_action(rviz2_node)    # T3 の役割
 
     return ld
