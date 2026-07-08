@@ -16,7 +16,7 @@ services:
     volumes:
       - type: bind
         source: "./src"
-        target: "/home/developer/projects/reluctant/src"
+        target: "/home/developer/mirsws/src"
       - type: bind
         source: "/tmp/.X11-unix"
         target: "/tmp/.X11-unix"
