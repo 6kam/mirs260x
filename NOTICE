@@ -1,4 +1,4 @@
-MIRS Project (mirs-tanq-a)
+MIRS Project (mirs260x)
 Copyright (c) 2026 MIRS Tanq Team A
 
 このプロジェクトは、以下のリポジトリからの派生および統合によって構成されています：
@@ -16,6 +16,6 @@ Copyright (c) 2026 MIRS Tanq Team A
            https://github.com/mirs240x/mirs_slam_navigation
    - Licensed under MIT License
 
-現在のプロジェクト（mirs-tanq-a）は、MIRS Tanq Team Aによってこれらをさらに改変・統合したものです。
+現在のプロジェクト（mirs260x）は、MIRS Tanq Team Aによってこれらをさらに改変・統合したものです。
 すべてのコンポーネントはMITライセンスの下で提供されています。
 詳細については、ルートディレクトリのLICENSEファイルを参照してください。

@@ -72,9 +72,9 @@ git clone https://github.com/6kam/mirs260x.git
 cd mirs260x/src
 
 # 使用するパッケージのクローン(MicroROSやLiDARのパッケージ)
-git clone -b humble https://github.com/micro-ROS/micro-ROS-Agent.git
+git clone -b jazzy https://github.com/micro-ROS/micro-ROS-Agent.git
 git clone https://github.com/Slamtec/sllidar_ros2.git
-git clone -b humble https://github.com/micro-ROS/micro_ros_msgs.git
+git clone -b jazzy https://github.com/micro-ROS/micro_ros_msgs.git
 
 cd ..
 ```
@@ -255,7 +255,7 @@ docker compose down
 
 ```bash
 # .bashrcに記述済み
-source /opt/ros/humble/setup.bash
+source /opt/ros/jazzy/setup.bash
 ```
 
 ## ライセンス
@@ -277,7 +277,7 @@ source /opt/ros/humble/setup.bash
 
 ## 参考リンク
 
-- [ROS 2 Documentation](https://docs.ros.org/en/humble/)
+- [ROS 2 Documentation](https://docs.ros.org/en/jazzy/)
 - [Navigation2](https://navigation.ros.org/)
 - [SLAM Toolbox](https://github.com/SteveMacenski/slam_toolbox)
 - [micro-ROS](https://micro.ros.org/)

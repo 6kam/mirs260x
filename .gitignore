@@ -6,7 +6,7 @@ node_modules/
 venv/
 # External ROS packages cloned from locally
 src/sllidar_ros2
-src/micro_ROS_Agent
+src/micro-ROS-Agent
 src/micro_ros_msgs
 
 # Python

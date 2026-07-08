@@ -1,7 +1,6 @@
 services:
-  mirs:
+  jazzy:
     build: .
-    container_name: humble_linux
     privileged: true
     network_mode: host
     ipc: host
@@ -15,14 +14,16 @@ services:
       - ROS_DOMAIN_ID=90
 
     volumes:
-      - ./src:/root/projects/mirsws/src
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      #- ${XAUTHORITY}:${XAUTHORITY}:ro
+      - type: bind
+        source: "./src"
+        target: "/home/developer/projects/reluctant/src"
+      - type: bind
+        source: "/tmp/.X11-unix"
+        target: "/tmp/.X11-unix"
 
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
       - /dev/ttyUSB1:/dev/ttyUSB1
-      - /dev/input/js0:/dev/input/js0
 
     stdin_open: true
     tty: true
