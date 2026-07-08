@@ -103,7 +103,7 @@ xhost +local:      # X11転送を許可（WSLでは不要）
 docker compose up -d
 
 # コンテナ内のターミナルに入る
-docker compose exec mirs bash
+docker compose exec jazzy bash
 ```
 
 ### 5. パッケージのビルド
