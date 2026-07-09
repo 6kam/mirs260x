@@ -1,7 +1,7 @@
 services:
   jazzy:
     build: .
-    container-name: jazzy
+    container_name: jazzy
     privileged: true
     network_mode: host
     ipc: host
