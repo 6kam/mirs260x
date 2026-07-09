@@ -1,9 +1,6 @@
 services:
-  ros2:
-    build:
-      context: .
-      dockerfile: ${DOCKERFILE}
-    container_name: ${CONTAINER_NAME}
+  jazzy:
+    build: .
     privileged: true
     network_mode: host
     ipc: host
@@ -17,9 +14,12 @@ services:
       - ROS_DOMAIN_ID=90
 
     volumes:
-      - ./src:/home/developer/mirsws/src
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      #- ${XAUTHORITY}:${XAUTHORITY}:ro
+      - type: bind
+        source: "./src"
+        target: "/home/developer/mirsws/src"
+      - type: bind
+        source: "/tmp/.X11-unix"
+        target: "/tmp/.X11-unix"
 
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
