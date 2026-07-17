@@ -31,7 +31,6 @@
   <exec_depend>dwb_core</exec_depend>
   <exec_depend>dwb_msgs</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
-  <exec_depend>joy</exec_depend>
   <exec_depend>v4l2_camera</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
 
