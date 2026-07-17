@@ -12,10 +12,10 @@ from serial.tools import list_ports
 def find_devices():
     devices = {} 
     for port in list_ports.comports():
-        if "CP2102_USB_to_UART_Bridge" in (port.description or ""):
-            devices["esp"] = port.device
-        if "Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller" in (port.description or ""):
+        if "CP2102 USB to UART Bridge" in (port.description or ""):
             devices["lidar"] = port.device
+        if "CP2102N USB to UART Bridge Controller" in (port.description or ""):
+            devices["esp"] = port.device
     
     return devices
 
