@@ -33,7 +33,9 @@
   <exec_depend>slam_toolbox</exec_depend>
   <exec_depend>v4l2_camera</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
+	<exec_depend>realsense2_description</exec_depend>
 
+	<exec_depend>rtabmap_ros</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
