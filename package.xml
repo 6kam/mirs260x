@@ -35,8 +35,11 @@
   <exec_depend>v4l2_camera</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
 	<exec_depend>realsense2_description</exec_depend>
+	<exec_depend>realsense2_camera</exec_depend>
 
 	<exec_depend>rtabmap_ros</exec_depend>
+	<exec_depend>rtabmap_launch</exec_depend>
+	<exec_depend>rtabmap_examples</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
