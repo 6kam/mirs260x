@@ -7,34 +7,20 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from serial.tools import list_ports
-
-def find_devices():
-    devices = {} 
-    for port in list_ports.comports():
-        if "CP2102 USB to UART Bridge" in (port.description or ""):
-            devices["lidar"] = port.device
-        if "CP2102N USB to UART Bridge Controller" in (port.description or ""):
-            devices["esp"] = port.device
-    
-    return devices
 
 def generate_launch_description():
-    # パッケージのインストールディレクトリを取得 (推奨される方法)
-    # これを使うには CMakeLists.txt で config フォルダが install されている必要があります
-    devices = find_devices()
 
     pkg_share = get_package_share_directory('mirs')
 
     # --- 引数の定義 ---
     esp_port = DeclareLaunchArgument(
         'esp_port', 
-        default_value=devices.get("esp", "/dev/ttyUSB1"),
+        default_value = "/dev/ttyUSB1", 
         description='Set esp32 usb port.')
     
     lidar_port = DeclareLaunchArgument(
         'lidar_port', 
-        default_value=devices.get("lidar", "/dev/ttyUSB0"),
+        default_value = "/dev/ttyUSB0",
         description='Set lidar usb port.')
 
     use_sim_time = DeclareLaunchArgument(
