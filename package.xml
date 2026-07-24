@@ -3,10 +3,11 @@
 <package format="3">
   <name>mirs</name>
   <version>0.0.0</version>
-  <description>ESP32 Client for ROS 2</description>
-  <maintainer email="6kam465@gmail.com">MIRS Tanq Team A</maintainer>
+  <description>mirs base program</description>
+  <maintainer email="6kam465@gmail.com">mirs260x</maintainer>
   <author>mirs240x</author>
   <author>mirs2502</author>
+  <author>mirs260x</author>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -31,14 +32,7 @@
   <exec_depend>dwb_core</exec_depend>
   <exec_depend>dwb_msgs</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
-  <exec_depend>v4l2_camera</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
-	<exec_depend>realsense2_description</exec_depend>
-	<exec_depend>realsense2_camera</exec_depend>
-
-	<exec_depend>rtabmap_ros</exec_depend>
-	<exec_depend>rtabmap_launch</exec_depend>
-	<exec_depend>rtabmap_examples</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
