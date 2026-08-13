@@ -7,17 +7,16 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from serial.tools import list_ports
 
-def find_devices():
-    devices = {} 
-    for port in list_ports.comports():
-        if "CP2102 USB to UART Bridge" in (port.description or ""):
-            devices["lidar"] = port.device
-        if "CP2102N USB to UART Bridge Controller" in (port.description or ""):
-            devices["esp"] = port.device
-    
-    return devices
+# def find_devices():
+#     devices = {} 
+#     for port in list_ports.comports():
+#         if "CP2102 USB to UART Bridge" in (port.description or ""):
+#             devices["lidar"] = port.device
+#         if "CP2102N USB to UART Bridge Controller" in (port.description or ""):
+#             devices["esp"] = port.device
+#
+#     return devices
 
 def generate_launch_description():
 

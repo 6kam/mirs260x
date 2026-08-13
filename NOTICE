@@ -1,0 +1,21 @@
+MIRS Project (mirs260x)
+Copyright (c) 2026 MIRS Tanq Team A
+
+このプロジェクトは、以下のリポジトリからの派生および統合によって構成されています：
+
+1. mirs2502 による改変版
+   - Copyright (c) 2026 mirs2502
+   - Source: https://github.com/mirs2502/mirs_mg5
+           https://github.com/mirs2502/mirs_description
+   - 備考: オリジナル版(mirs240x)をクローンし、パッケージ統合などを行ったもの。
+
+2. mirs240x によるオリジナル版
+   - Copyright (c) 2024 mirs240x
+   - Source: https://github.com/mirs240x/mirs_mg5
+           https://github.com/mirs240x/mirs_msgs
+           https://github.com/mirs240x/mirs_slam_navigation
+   - Licensed under MIT License
+
+現在のプロジェクト（mirs260x）は、MIRS Tanq Team Aによってこれらをさらに改変・統合したものです。
+すべてのコンポーネントはMITライセンスの下で提供されています。
+詳細については、ルートディレクトリのLICENSEファイルを参照してください。

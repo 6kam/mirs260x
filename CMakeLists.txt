@@ -77,7 +77,6 @@ install(PROGRAMS
 install(DIRECTORY
   config
   launch
-  rviz
   maps
   urdf
   DESTINATION share/${PROJECT_NAME}/
