@@ -26,12 +26,12 @@ def generate_launch_description():
     # --- 引数の定義 ---
     esp_port = DeclareLaunchArgument(
         'esp_port', 
-        default_value='/dev/ttyUSB1',
+        default_value = "/dev/ttyUSB1", 
         description='Set esp32 usb port.')
     
     lidar_port = DeclareLaunchArgument(
         'lidar_port', 
-        default_value='/dev/ttyUSB0',
+        default_value = "/dev/ttyUSB0",
         description='Set lidar usb port.')
 
     use_sim_time = DeclareLaunchArgument(

@@ -4,8 +4,9 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
     # パッケージのインストールディレクトリを取得
@@ -70,13 +71,19 @@ def generate_launch_description():
     )
 
     # Robot State Publisher (URDF)
-    urdf_file_name = 'mirs.urdf'
+    urdf_file_name = 'mirs_2.urdf'
     urdf_path = os.path.join(
         get_package_share_directory('mirs'),
         'urdf',
         urdf_file_name)
-    with open(urdf_path, 'r') as infp:
-        robot_desc = infp.read()
+    robot_desc = ParameterValue(Command(['xacro ', urdf_path]), value_type=str)
+
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        parameters=[{'robot_description': robot_desc, 'use_sim_time': LaunchConfiguration('use_sim_time')}]
+    )
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
