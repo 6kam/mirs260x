@@ -21,6 +21,7 @@
   <depend>mirs_msgs</depend>
   <depend>sensor_msgs</depend>
   <exec_depend>robot_localization</exec_depend>
+	<exec_depend>diagnostic_updater</exec_depend>
   <exec_depend>rclpy</exec_depend>
   
   <exec_depend>joint_state_publisher_gui</exec_depend>
@@ -31,7 +32,6 @@
   <exec_depend>dwb_core</exec_depend>
   <exec_depend>dwb_msgs</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
-  <exec_depend>v4l2_camera</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
 
   <export>

@@ -2,10 +2,11 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch.conditions import IfCondition
 
 def generate_launch_description():
     # --- パッケージディレクトリの取得 ---
@@ -48,12 +49,12 @@ def generate_launch_description():
     # 5. ポート設定
     esp_port = DeclareLaunchArgument(
         'esp_port',
-        default_value='/dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_44dcbf303dfbeb1193273ca4c6d924ec-if00-port0',
+        default_value='/dev/ttyUSB1',
         description='ESP32 USB port'
     )
     lidar_port = DeclareLaunchArgument(
         'lidar_port',
-        default_value='/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_947ec7a9868124459631e474f6875e54-if00-port0',
+        default_value='/dev/ttyUSB0',
         description='LiDAR USB port'
     )
 
@@ -158,9 +159,6 @@ def generate_launch_description():
         default_value='true',
         description='Launch Groot for behavior tree visualization'
     )
-
-    from launch.actions import ExecuteProcess
-    from launch.conditions import IfCondition
 
     # Grootの実行パス設定
     groot_executable = DeclareLaunchArgument(

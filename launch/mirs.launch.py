@@ -9,25 +9,28 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    # パッケージのインストールディレクトリを取得 (推奨される方法)
-    # これを使うには CMakeLists.txt で config フォルダが install されている必要があります
+
     pkg_share = get_package_share_directory('mirs')
 
     # --- 引数の定義 ---
     esp_port = DeclareLaunchArgument(
-        'esp_port', default_value='/dev/ttyUSB1',
+        'esp_port', 
+        default_value = "/dev/ttyUSB1", 
         description='Set esp32 usb port.')
     
     lidar_port = DeclareLaunchArgument(
-        'lidar_port', default_value='/dev/ttyUSB0',
+        'lidar_port', 
+        default_value = "/dev/ttyUSB0",
         description='Set lidar usb port.')
 
     use_sim_time = DeclareLaunchArgument(
-        'use_sim_time', default_value='false',
+        'use_sim_time', 
+        default_value='false',
         description='Use simulated clock if true')
     
     use_ekf_global = DeclareLaunchArgument(
-        'use_ekf_global', default_value='true',
+        'use_ekf_global', 
+        default_value='true',
         description='Whether to start the global EKF node.')
     
     # --- 設定ファイルのパス ---
