@@ -27,10 +27,10 @@ int main(int argc, char **argv)
     // サービスが利用可能になるまで待機
     while (!client->wait_for_service(1s)) {
         if (!rclcpp::ok()) {
-            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "サービス待機中に中断されました。終了します。");
+            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
             return 0;
         }
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "サービスが利用できません。再試行します...");
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
     }
 
     // リクエストの作成
