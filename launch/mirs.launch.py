@@ -12,7 +12,7 @@ def generate_launch_description():
 
     pkg_share = get_package_share_directory('mirs')
 
-    # --- 引数の定義 ---
+    # --- パラメータ管理 ---
     esp_port = DeclareLaunchArgument(
         'esp_port', 
         default_value = "/dev/ttyUSB1", 
@@ -35,10 +35,9 @@ def generate_launch_description():
     
     # --- 設定ファイルのパス ---
     config_file_path = os.path.join(pkg_share, 'config', 'config.yaml')
-    
-    ekf_config_path = os.path.join(pkg_share, 'config', 'ekf_params.yaml')
-    #nav2ではglobal ekfは使わないのでコメントアウト
-    #ekf_global_config_path = os.path.join(pkg_share, 'config', 'ekf_global_params.yaml')
+    ekf_config_path = os.path.join(pkg_share, 'config','ekf', 'ekf_params.yaml')
+    # nav2ではglobal ekfは使わないのでコメントアウト
+    # #ekf_global_config_path = os.path.join(pkg_share, 'config', 'ekf', 'ekf_global_params.yaml')
 
     # --- ノードの定義 ---
 
