@@ -41,7 +41,7 @@ def generate_launch_description():
 
     # --- ノードの定義 ---
 
-    # 1. オドメトリ配信ノード (注意: C++側でTF配信をOFFにすること！)
+    # 1. オドメトリ配信ノード 
     odometry_node = Node(
         package='mirs',
         executable='odometry_publisher',
@@ -77,48 +77,58 @@ def generate_launch_description():
     )
 
     # 5. Static TF (Base Link -> Laser)
-    # URDFを使うためコメントアウト
-    # tf2_ros_node = Node(
-    #     package='tf2_ros',
-    #     executable='static_transform_publisher',
+    base_link_laser_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        output='screen',
+        # LiDAR is mounted with its local Y axis pointing upward:
+        # fixed +90 deg rotation around X.
+        arguments=["--x", "0", "--y", "0", "--z", "0.3",
+                   "--roll", "1.5707963267948966", "--pitch", "0", "--yaw", "0",
+                   "--frame-id", "base_link", "--child-frame-id", "laser"]
+    )
+
+    odom_base_link_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=["--x","0","--y","0","--z","0","--yaw","0","--pitch","0","--roll","0",
+                   "--frame-id","odom","--child-frame-id","base_link"]
+    )
+    #
+    # # Robot State Publisher (URDF)
+    # urdf_file_name = 'mirs.urdf'
+    # urdf_path = os.path.join(
+    #     get_package_share_directory('mirs'),
+    #     'urdf',
+    #     urdf_file_name)
+    # with open(urdf_path, 'r') as infp:
+    #     robot_desc = infp.read()
+    #
+    # robot_state_publisher_node = Node(
+    #     package='robot_state_publisher',
+    #     executable='robot_state_publisher',
+    #     name='robot_state_publisher',
     #     output='screen',
-    #     arguments=["0", "0", "0.3", "0", "0", "0", "base_link", "laser"]
+    #     parameters=[{'robot_description': robot_desc, 'use_sim_time': LaunchConfiguration('use_sim_time')}],
     # )
-
-    # Robot State Publisher (URDF)
-    urdf_file_name = 'mirs.urdf'
-    urdf_path = os.path.join(
-        get_package_share_directory('mirs'),
-        'urdf',
-        urdf_file_name)
-    with open(urdf_path, 'r') as infp:
-        robot_desc = infp.read()
-
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{'robot_description': robot_desc, 'use_sim_time': LaunchConfiguration('use_sim_time')}],
-    )
-
-    # Joint State Publisher (ホイールの回転角度を配信)
-    joint_state_publisher_node = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher',
-        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
-    )
-
-    # Local EKF (odom -> base_link)
-    ekf_node_local = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node_local',
-        output='screen',
-        parameters=[ekf_config_path, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        remappings=[('/odometry/filtered', '/odometry/local')]
-    )
+    #
+    # # Joint State Publisher (ホイールの回転角度を配信)
+    # joint_state_publisher_node = Node(
+    #     package='joint_state_publisher',
+    #     executable='joint_state_publisher',
+    #     name='joint_state_publisher',
+    #     parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
+    # )
+    #
+    # # Local EKF (odom -> base_link)
+    # ekf_node_local = Node(
+    #     package='robot_localization',
+    #     executable='ekf_node',
+    #     name='ekf_filter_node_local',
+    #     output='screen',
+    #     parameters=[ekf_config_path, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
+    #     remappings=[('/odometry/filtered', '/odometry/local')]
+    # )
 
     # Global EKF (map -> odom)
     #ekf_node_global = Node(
@@ -144,11 +154,12 @@ def generate_launch_description():
     ld.add_action(micro_ros)
     ld.add_action(sllidar_launch)
 
-    # ld.add_action(tf2_ros_node)
-    ld.add_action(robot_state_publisher_node)
-    ld.add_action(joint_state_publisher_node)
+    ld.add_action(base_link_laser_tf_node)
+    ld.add_action(odom_base_link_tf_node)
+    # ld.add_action(robot_state_publisher_node)
+    # ld.add_action(joint_state_publisher_node)
     
-    ld.add_action(ekf_node_local)
+    # ld.add_action(ekf_node_local)
     #ld.add_action(ekf_node_global)
 
     return ld

@@ -34,6 +34,7 @@ def generate_launch_description():
         default_value=os.path.join(
             mirs_share_dir,
             'config',
+            'slam',
             'slam_toolbox_config.yaml')
     )
 
@@ -77,17 +78,14 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_rviz'))
     )
 
-    # --- 4. 起動するノードをリスト化 ---
+
     ld = LaunchDescription()
     
-    # 引数の宣言を追加
     ld.add_action(declare_arg_slam_config_file)
     ld.add_action(declare_arg_rviz2_config_path)
     ld.add_action(use_rviz)
-
-    # 起動するノードを追加
-    ld.add_action(mirs_launch)   # T1 の役割
-    ld.add_action(slam_toolbox_launch)     # T2 の役割
-    ld.add_action(rviz2_node)    # T3 の役割
+    ld.add_action(mirs_launch)
+    ld.add_action(slam_toolbox_launch)
+    ld.add_action(rviz2_node)
 
     return ld
